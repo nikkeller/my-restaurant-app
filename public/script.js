@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchForm = document.getElementById("search-form");
   const genreSelect = document.getElementById("genre-select");
   const partySizeInput = document.getElementById("party-size-input");
+  const sortBySelect = document.getElementById("sort-by-select");
   const resultsContainer = document.getElementById("results-container");
 
   // フォームが送信されたときの処理
@@ -10,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const genre = genreSelect.value;
     const partySize = partySizeInput.value;
+    const sortBy = sortBySelect.value; // ★★★追加★★★
 
     // APIを呼び出して結果を取得
     try {

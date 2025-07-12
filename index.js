@@ -20,26 +20,33 @@ app.get("/api/shops", async (req, res) => {
   }
 });
 
-// 4. ★★★ 新しいAPI：店舗提案（レコメンド）機能 ★★★
+// 4. 店舗提案（レコメンド）機能API
 app.get("/api/recommend", async (req, res) => {
   try {
-    const { genre, partySize } = req.query; // クエリパラメータからジャンルと人数を取得
-    const partySizeNum = parseInt(partySize, 10); // 人数を文字列から数値に変換
+    const { genre, partySize, sortBy } = req.query;
+    const partySizeNum = parseInt(partySize, 10);
 
-    // 検索条件を構築
     const whereClause = {};
 
-    if (genre) {
+    // ★ 修正点1: ジャンルの値が空文字でないことを明確にチェック
+    if (genre && genre !== "") {
       whereClause.genre = genre;
     }
 
     if (partySizeNum) {
-      whereClause.partySizeMin = { lte: partySizeNum }; // 最小人数が入力人数以下
-      whereClause.partySizeMax = { gte: partySizeNum }; // 最大人数が入力人数以上
+      whereClause.partySizeMin = { lte: partySizeNum };
+      whereClause.partySizeMax = { gte: partySizeNum };
+    }
+
+    const orderByClause = {};
+    // ★ 修正点2: sortByの値が'rating'の場合の処理を確実にする
+    if (sortBy === "rating") {
+      orderByClause.googleRating = "desc";
     }
 
     const shops = await prisma.shop.findMany({
       where: whereClause,
+      orderBy: orderByClause,
     });
 
     res.json(shops);
