@@ -1,22 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. 必要なHTML要素をすべて取得する
   const searchForm = document.getElementById("search-form");
   const genreSelect = document.getElementById("genre-select");
   const partySizeInput = document.getElementById("party-size-input");
-  const sortBySelect = document.getElementById("sort-by-select");
+  const sortBySelect = document.getElementById("sort-by-select"); // ★ この行が重要
   const resultsContainer = document.getElementById("results-container");
 
-  // フォームが送信されたときの処理
+  // 2. フォームの検索ボタンが押されたときの処理
   searchForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
+    event.preventDefault(); // ページの再読み込みを防ぐ
 
+    // 3. フォームから現在の値を取得する
     const genre = genreSelect.value;
     const partySize = partySizeInput.value;
-    const sortBy = sortBySelect.value; // ★★★追加★★★
+    const sortBy = sortBySelect.value; // ★ この行で並び替えの値を取得
 
-    // APIを呼び出して結果を取得
     try {
-      // クエリパラメータを付けてAPIのURLを構築
-      const query = new URLSearchParams({ genre, partySize }).toString();
+      // 4. 取得したすべての値をURLの末尾（クエリパラメータ）に含める
+      const query = new URLSearchParams({
+        genre,
+        partySize,
+        sortBy,
+      }).toString(); // ★ ここにsortByを含めるのが重要
       const response = await fetch(`/api/recommend?${query}`);
 
       if (!response.ok) {
@@ -24,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const shops = await response.json();
-      displayResults(shops); // 結果を表示する関数を呼び出す
+      displayResults(shops); // 結果表示の関数を呼び出す
     } catch (error) {
       console.error(error);
       resultsContainer.innerHTML =
@@ -32,9 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 結果を表示する関数
+  // 5. 結果を表示する関数（この部分は変更なし）
   function displayResults(shops) {
-    resultsContainer.innerHTML = ""; // 前回の結果をクリア
+    resultsContainer.innerHTML = "";
 
     if (shops.length === 0) {
       resultsContainer.innerHTML =
