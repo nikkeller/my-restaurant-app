@@ -1,40 +1,63 @@
+/* Google Fontsからフォントをインポート */
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap");
+
 /* 基本設定 */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Hiragino Sans", "Noto Sans CJK JP", "Yu Gothic", Meiryo, sans-serif;
+  font-family: "M PLUS Rounded 1c", sans-serif; /* ★フォントを変更 */
   line-height: 1.7;
   margin: 0;
-  background-color: #f8f9fa;
-  color: #343a40;
+  background-color: #eaf2ff; /* ★背景色を薄い青に */
+  color: #2c3e50;
+  /* ★背景画像の設定 */
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.6)
+    ),
+    url("m_townnews-781378.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
 }
 
 /* ヘッダー */
 header {
-  background-color: #fff;
+  background-color: #4a90e2; /* ★メインカラーを青系に */
   padding: 20px;
   text-align: center;
-  border-bottom: 1px solid #dee2e6;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.original-gradient {
+  height: 60px;
+  width: 100%;
+  background-image: conic-gradient(
+    from 180deg at 50% 100%,
+    rgba(244, 250, 244, 1) 45deg,
+    rgba(117, 246, 111, 1) 115deg,
+    rgba(236, 117, 117, 1) 180deg,
+    rgba(68, 200, 239, 1) 235deg,
+    rgba(212, 233, 120, 1) 265deg
+  );
 }
 header h1 {
   margin: 0;
-  font-size: 2em;
-  color: #212529;
+  font-size: 2.2em;
+  color: #ffffff; /* ★文字色を白に */
+  font-weight: 700;
 }
 
 /* メインコンテンツ */
 main {
-  max-width: 800px;
+  max-width: 950px;
   margin: 40px auto;
   padding: 20px;
 }
 
 /* フォーム全体 */
 #search-form {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin-bottom: 40px;
   display: flex;
   flex-wrap: wrap;
@@ -42,10 +65,7 @@ main {
   align-items: flex-end;
 }
 
-/* フォームの各項目 */
-.form-group {
-  flex-grow: 1;
-}
+/* ... フォームの項目やボタンのスタイルは前回から微調整 ... */
 .form-group label {
   display: block;
   margin-bottom: 5px;
@@ -53,28 +73,25 @@ main {
 }
 .form-group select,
 .form-group input {
-  width: 100%;
+  width: 98%;
   padding: 10px;
   border: 1px solid #ced4da;
   border-radius: 4px;
   font-size: 1em;
 }
-
-/* 検索ボタン */
 #search-form button {
   padding: 10px 20px;
   font-size: 1em;
   font-weight: bold;
   color: #fff;
-  background-color: #007bff;
+  background-color: #357abd;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
-  flex-shrink: 0; /* ボタンが縮まないように */
 }
 #search-form button:hover {
-  background-color: #0056b3;
+  background-color: #285a8c;
 }
 
 /* 結果表示エリア */
@@ -83,20 +100,23 @@ main {
   padding: 0;
 }
 #results-container li {
-  background-color: #fff;
-  border: 1px solid #dee2e6;
+  background-color: #fff; /* ★枠線を太く */
   padding: 20px;
   margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; /* ★バナーを配置するための基準 */
+  overflow: hidden; /* ★バナーのはみ出しを防ぐ */
 }
+
 #results-container li:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
 }
 #results-container li strong {
-  font-size: 1.3em;
-  color: #0056b3;
+  font-size: 1.4em;
+  color: #2c3e50;
   display: block;
   margin-bottom: 10px;
 }
@@ -105,4 +125,54 @@ main {
   margin-right: 15px;
   color: #6c757d;
   font-size: 0.9em;
+}
+
+/* ★★★ 通りごとのスタイル ★★★ */
+
+/* バナーの共通スタイル */
+.street-banner {
+  position: absolute;
+  top: 0px;
+  left: 3px;
+  width: 100px;
+  padding: 2px 0;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 普通部通り（緑） */
+.street-futsubu {
+  border-color: #28a745;
+}
+.banner-futsubu {
+  background-color: #28a745;
+}
+
+/* 日吉中央通り（赤） */
+.street-chuo {
+  border-color: #dc3545;
+}
+.banner-chuo {
+  background-color: #dc3545;
+}
+
+/* 浜銀通り（青） */
+.street-hamagin {
+  border-color: #007bff;
+}
+.banner-hamagin {
+  background-color: #007bff;
+}
+
+/* サンロード（黄） */
+.street-sunroad {
+  border-color: #ffc107;
+}
+.banner-sunroad {
+  background-color: #ffc107;
+  color: #212529;
 }

@@ -7,6 +7,8 @@ CREATE TABLE "Shop" (
     "partySizeMax" INTEGER NOT NULL,
     "seatingCapacity" INTEGER NOT NULL,
     "googleRating" DOUBLE PRECISION NOT NULL,
+    "money" INTEGER NOT NULL,
+    "street" TEXT NOT NULL,
 
     CONSTRAINT "Shop_pkey" PRIMARY KEY ("id")
 );

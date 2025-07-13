@@ -21,29 +21,47 @@ app.get("/api/shops", async (req, res) => {
 });
 
 // 4. 店舗提案（レコメンド）機能API
+// index.js の /api/recommend エンドポイント
+
 app.get("/api/recommend", async (req, res) => {
   try {
-    const { genre, partySize, sortBy } = req.query;
-    const partySizeNum = parseInt(partySize, 10);
+    const { genre, partySize, money, sortBy } = req.query;
 
+    // --- 検索条件（WHERE句）の構築 ---
     const whereClause = {};
 
-    // ★ 修正点1: ジャンルの値が空文字でないことを明確にチェック
-    if (genre && genre !== "") {
+    // 1. ジャンルでの絞り込み
+    if (genre) {
+      // genreが空文字""でない場合のみ条件に追加
       whereClause.genre = genre;
     }
 
-    if (partySizeNum) {
+    // 2. 人数での絞り込み
+    const partySizeNum = parseInt(partySize, 10);
+    // 有効な数値（NaNではなく、0より大きい）の場合のみ条件に追加
+    if (!isNaN(partySizeNum) && partySizeNum > 0) {
       whereClause.partySizeMin = { lte: partySizeNum };
       whereClause.partySizeMax = { gte: partySizeNum };
     }
 
-    const orderByClause = {};
-    // ★ 修正点2: sortByの値が'rating'の場合の処理を確実にする
-    if (sortBy === "rating") {
-      orderByClause.googleRating = "desc";
+    // 3. 金額での絞り込み
+    const moneyNum = parseInt(money, 10);
+    // ★★★ここが重要：有効な数値（NaNではなく、0より大きい）の場合のみ条件に追加
+    if (!isNaN(moneyNum) && moneyNum > 0) {
+      whereClause.money = { lte: moneyNum }; // 'money'カラムが入力金額以下
     }
 
+    // --- 並び替え条件（ORDER BY句）の構築 ---
+    const orderByClause = [];
+
+    // ★★★ここが重要：「安い順」が選択された場合の処理
+    if (sortBy === "money_asc") {
+      orderByClause.push({ money: "asc" });
+    } else if (sortBy === "rating") {
+      orderByClause.push({ googleRating: "desc" });
+    }
+
+    // --- データベース検索の実行 ---
     const shops = await prisma.shop.findMany({
       where: whereClause,
       orderBy: orderByClause,

@@ -19,4 +19,6 @@ model Shop {
   partySizeMax    Int
   seatingCapacity Int
   googleRating    Float
+  money           Int     
+  street          String  
 }
